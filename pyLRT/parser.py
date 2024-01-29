@@ -77,6 +77,9 @@ class OutputParser:
 
         # Transpose the output such that the first index is the data_var
         output = np.array(output).T
+        
+        if output.size == 0:
+            raise ValueError("No output from libRadtran run.")
 
         # Identify the coordinates for each dim.
         dim_values = {}
