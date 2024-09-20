@@ -39,8 +39,8 @@ tdata, tverb = tlrt.run(verbose=True, parse=True, dims=['lambda','pressure_out']
 ###################################################################
 wvlticks = np.array([5000, 10000, 15000, 20000, 30000, 50000, 70000])
 
-tdata["wvl"] = tdata.wvl.isel(pressure_out=0, drop=True)
-tdata = tdata.swap_dims({"wvl_coord":"wvl"})
+# tdata["wvl"] = tdata.wvl.isel(pressure_out=0, drop=True)
+# tdata = tdata.swap_dims({"wvl":"wvl"})
 tdata.heat.plot(
     x="wvl", y="pressure_out", yincrease=False,
     norm=matplotlib.colors.SymLogNorm(linthresh=0.0001, vmin=-0.2, vmax=0.2,),
@@ -81,6 +81,7 @@ del(fig)
 trans_ticks = np.array([0, 0.5, 1])
 
 ax = plt.subplot(211)
+breakpoint()
 tdata.heat.plot(
     x="wvl", y="pressure_out", yincrease=False,
     norm=matplotlib.colors.SymLogNorm(linthresh=0.0001, vmin=-0.2, vmax=0.2,),

@@ -36,12 +36,10 @@ slrt.options['quiet'] = ''
 slrt.options['sza'] = '0'
 
 tlrt = copy.deepcopy(slrt)
-tlrt.options['rte_solver'] = 'disort'
 tlrt.options['source'] = 'thermal'
 tlrt.options['output_user'] = 'lambda edir eup uu'
 tlrt.options['wavelength'] = '2500 80000'
 tlrt.options['mol_abs_param'] = 'reptran fine'
-tlrt.options['sza'] = '0'
 
 # Add in a cloud
 slrt_cld = copy.deepcopy(slrt)
@@ -56,11 +54,11 @@ tlrt_cld.cloud = {'z': np.array([4, 3.7]),
 
 # Run the RT
 print('Initial RT')
-sdata, sverb = slrt.run(verbose=True, parse=True, dims=['lambda','zout'], zout=[0, 5, 120])
-tdata, tverb = tlrt.run(verbose=True, parser=slrt.parser)
+sdata = slrt.run(parse=True)
+tdata = tlrt.run(parse=True)
 print('Cloud RT')
-tcdata, tcverb = tlrt_cld.run(verbose=True, parser=slrt.parser)
-scdata, scverb = slrt_cld.run(verbose=True, parser=slrt.parser)
+tcdata = tlrt_cld.run(parse=True)
+scdata = slrt_cld.run(parse=True)
 print('Done RT')
 
 fig, ax = plt.subplots(figsize=(8, 4.3))
@@ -80,4 +78,4 @@ plt.ylabel(r'Spectral radiance (Wm$^{-2}$ sr$^{-1}$cm)')
 plt.legend()
 
 plt.show()
-# fig.savefig('output/cloud_temp.pdf', bbox_inches='tight')
+fig.savefig('output/cloud_temp.pdf', bbox_inches='tight')

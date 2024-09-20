@@ -33,6 +33,7 @@ plt.xlim(np.log(0.24), np.log(70))
 
 plt.yscale('log')
 plt.ylabel('Complex Refractive Index')
+plt.legend()
 
 fig = plt.gcf()
 fig.set_size_inches(4, 4)

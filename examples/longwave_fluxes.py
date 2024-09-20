@@ -28,9 +28,9 @@ tdata2, tverb = tlrt.run(verbose=True)
 # Plot the height-resolved fluxes #
 ###################################
 
-tdata.edn.plot(y='p_coord', label='Downwelling', c='b')
-tdata.eup.plot(y='p_coord', label='Upwelling', c='r')
-(tdata.eup - tdata.edn).plot(y='p_coord', label='Net', c='g')
+tdata.edn.plot(y='p', label='Downwelling', c='b')
+tdata.eup.plot(y='p', label='Upwelling', c='r')
+(tdata.eup - tdata.edn).plot(y='p', label='Net', c='g')
 plt.legend()
 
 plt.ylim(1000, 0)
@@ -49,12 +49,12 @@ del fig
 # Change in fluxes from 4xCO2 #
 ###############################
 
-tdata.edn.plot(y='p_coord', label='Downwelling', c='b')
-tdata.eup.plot(y='p_coord', label='Upwelling', c='r')
-(tdata.eup - tdata.edn).plot(y='p_coord', label='Net', c='g')
-tdata2.edn.plot(y='p_coord', linestyle='--', c='b')
-tdata2.eup.plot(y='p_coord', linestyle='--', c='r')
-(tdata2.eup - tdata2.edn).plot(y='p_coord', linestyle='--', c='g')
+tdata.edn.plot(y='p', label='Downwelling', c='b')
+tdata.eup.plot(y='p', label='Upwelling', c='r')
+(tdata.eup - tdata.edn).plot(y='p', label='Net', c='g')
+tdata2.edn.plot(y='p', linestyle='--', c='b')
+tdata2.eup.plot(y='p', linestyle='--', c='r')
+(tdata2.eup - tdata2.edn).plot(y='p', linestyle='--', c='g')
 plt.legend()
 
 plt.ylim(1000, 0)
