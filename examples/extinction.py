@@ -209,7 +209,7 @@ for k, toa in enumerate([-1, -5, -10]):
         plt.xticks(np.log(wvlticks[0]), wvlticks[1])
     else:
         plt.xlabel('')
-        plt.xticks(np.log(wvlticks[0]), [''])
+        plt.xticks(np.log(wvlticks[0]), [''] * len(wvlticks[0]))
 
     plt.ylabel('Extinction\n'+['TOA-Surf', 'TOA-5km', 'TOA-10km'][k])
     plt.yticks(*trans_ticks)

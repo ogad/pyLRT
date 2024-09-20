@@ -12,14 +12,14 @@ def planck_wvl_plot(t, wvl, add_text=True, ax=None, unit=1e-9, **kwargs):
         ax = plt.gca()
     radiances = 100 * (wvl*unit)**2 * planck_function(t, wavelength=wvl*unit)
     handle = ax.plot(wvl, radiances, **kwargs)
-    
+
     if add_text:
-        label_wvl = wvl[np.array(radiances).argmax()] if isinstance(add_text, bool) else add_text
+        label_wvl = wvl[np.unravel_index(np.array(radiances).argmax(), wvl.shape)] if isinstance(add_text, bool) else add_text
         ax.text(
-            label_wvl, 
-            radiances.max(), 
+            label_wvl,
+            radiances.max(),
             str(t)+'K',)
-    
+
     return handle
 
 LIBRADTRAN_FOLDER = get_lrt_folder()
@@ -64,9 +64,9 @@ scdata, scverb = slrt_cld.run(verbose=True, parser=slrt.parser)
 print('Done RT')
 
 fig, ax = plt.subplots(figsize=(8, 4.3))
-(tdata.sel(zout=0)/np.pi).eup.plot(label='Surface (288K)', xincrease=False)
-(tdata.sel(zout=120)/np.pi).eup.plot(label='TOA (clear sky)')
-(tcdata.sel(zout=120)/np.pi).eup.plot(label='TOA (cloudy)')
+(tdata.sel(zout='0')/np.pi).eup.plot(label='Surface (288K)', xincrease=False)
+(tdata.sel(zout='TOA')/np.pi).eup.plot(label='TOA (clear sky)')
+(tcdata.sel(zout='TOA')/np.pi).eup.plot(label='TOA (cloudy)')
 
 plt.xscale('log')
 for t in [300, 275, 250, 225, 200, 175]:
