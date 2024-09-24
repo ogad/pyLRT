@@ -22,12 +22,27 @@ outdir = Path(__file__).parent / "output"
 
 
 def shade_and_outline(x, y, color="grey"):
+    """
+    Shades the area under the curve defined by x and y, and optionally outlines it.
+    Parameters:
+    x (array-like): The x-coordinates of the data points.
+    y (array-like): The y-coordinates of the data points.
+    color (str, optional): The color to fill the area under the curve. Defaults to "grey".
+                           If the color is "grey", the outline will be drawn with a black line.
+    """
     plt.fill_between(x, y, color=color)
     if color == "grey":
         plt.plot(x, y, lw=0.5, c="k")
 
 
 def plot_planck_functions(temps=[210, 255, 310, 5800], colors=["r", "C1", "y", "b"]):
+    """
+    Plots the Planck functions for given temperatures.
+    Parameters:
+    temps (list of int, optional): List of temperatures in Kelvin for which to plot the Planck function.
+                                   Default is [210, 255, 310, 5800].
+    colors (list of str, optional): List of colors for each temperature plot. Default is ["r", "C1", "y", "b"].
+    """
     for temp, color in zip(temps, colors):
         wvl = swvl_extended if temp == 5800 else twvl
         planck = planck_function(temp, wavelength=wvl * 1e-9)
@@ -63,11 +78,13 @@ tlrt.options["wavelength"] = "2500 80000"
 tlrt.options["mol_abs_param"] = "reptran fine"
 tlrt.options["sza"] = "0"
 
+
 # %% Run the radiative transfer models
 print("Initial RT")
 sdata, sverb = slrt.run(verbose=True)
 tdata, tverb = tlrt.run(verbose=True)
 print("Done RT")
+
 
 # %% Analyse the verbose output
 
@@ -79,6 +96,20 @@ twvl = tverb["gases"]["wvl"][::10]
 
 
 def extinction_plot(var, toa_index=0, from_alt_index=None, gas_with_rayleigh=False):
+    """
+    Plots the extinction profile based on the specified variable and conditions.
+    Parameters:
+    var (str): The variable to plot. Can be a specific gas or "total".
+    toa_index (int, optional): The top of atmosphere index. Defaults to 0.
+    from_alt_index (int, optional): The altitude index from which to start. Defaults to None.
+    gas_with_rayleigh (bool, optional): Whether to include Rayleigh scattering for a specific gas. Defaults to False.
+    Raises:
+    ValueError: If `gas_with_rayleigh` is True and `var` is "total".
+    Notes:
+    - If `var` is "total" or `gas_with_rayleigh` is True, the optical depth is calculated for all gases and Rayleigh scattering.
+    - If `var` is a specific gas, the optical depth is calculated for that gas only.
+    - The function uses `shade_and_outline` to plot the extinction profile.
+    """
     # Integrate optical depth
     slicers = (slice(None, None, 10), slice(toa_index, from_alt_index))
 
@@ -138,6 +169,22 @@ def format_axes(
     ylabel_extra="",
     twin=True,
 ):
+    """
+    Formats the axes of a plot with specified labels, ticks, and limits.
+    Parameters:
+    xlabel : bool, optional
+        If True, sets the x-axis label to "Wavelength (μm)". Default is True.
+    ylabel : bool, optional
+        If True, sets the y-axis label to "Extinction". Default is True.
+    xticklabels : bool, optional
+        If True, sets the x-axis tick labels. Default is True.
+    yticklabels : bool, optional
+        If True, sets the y-axis tick labels. Default is True.
+    ylabel_extra : str, optional
+        Additional text to append to the y-axis label. Default is an empty string.
+    twin : bool, optional
+        If True, creates a twin y-axis with a label "$\lambda$B$_{\lambda}$ (normalised)". Default is True.
+    """
     plt.xticks(
         np.log(wvlticks[0]), wvlticks[1] if xticklabels else [""] * len(wvlticks[1])
     )
@@ -183,6 +230,7 @@ fig.savefig(outdir / "as_complete.png", bbox_inches="tight")
 fig.clf()
 del fig
 
+
 # %% Total extinction and planck functions
 fig = plt.gcf()
 
@@ -195,6 +243,7 @@ plt.tight_layout(h_pad=0)
 fig.set_size_inches((8, 3))
 fig.savefig(outdir / "as_total.png")
 fig.clf()
+
 
 # %% Total extinction at different heights
 fig = plt.gcf()
